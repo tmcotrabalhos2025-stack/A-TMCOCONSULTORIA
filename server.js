@@ -8,7 +8,7 @@ const fs = require("fs");
 const path = require("path");
 
 const app = express();
-const PORT = process.env.PORT || 3000; // Render precisa usar process.env.PORT
+const PORT = process.env.PORT || 10000; // Render precisa usar process.env.PORT
 
 // Middleware
 app.use(bodyParser.json());
