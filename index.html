@@ -8,37 +8,491 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
-    :root{--azul:#003366;--azul2:#007BFF;--amarelo:#FFD700;--cinza:#f4f4f4;}
-    *{box-sizing:border-box}
-    body{font-family:Arial,Helvetica,sans-serif;background:var(--cinza);margin:0}
-    header{background:var(--azul);color:#fff;padding:0;border-bottom:2px solid var(--azul2);text-align:center}
-    header img{width:100%;height:250px;object-fit:cover;display:block}
-    header h1{margin:0;padding:12px;font-size:20px}
-    .cta{text-align:center;margin:18px 0}
-    .cta button{padding:14px 24px;background:var(--azul2);color:#fff;border:0;border-radius:10px;font-size:16px;cursor:pointer}
-    form{display:none;background:#fff;max-width:980px;margin:18px auto;padding:22px;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.08)}
-    h3{background:var(--amarelo);color:var(--azul);padding:8px 12px;border-radius:8px;margin:26px 0 14px;font-size:18px}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .full{grid-column:1/-1}
-    .q{display:flex;flex-direction:column;gap:6px}
-    label{font-weight:700;color:var(--azul2)}
-    input,select,textarea{padding:10px;border:1px solid #d0d7de;border-radius:8px}
-    input:invalid{border-color:#e74c3c}
-    small.req{color:#e74c3c;font-weight:700}
-    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-    .btn{padding:10px 16px;border-radius:8px;border:0;cursor:pointer}
-    .primary{background:var(--azul2);color:#fff}
-    .ghost{background:#e9eef7;color:#083663}
-    footer{text-align:center;background:var(--azul);color:#fff;border-top:2px solid var(--azul2);padding:14px;margin-top:28px}
-    .note{font-size:12px;color:#666}
-    @media(max-width:780px){.grid{grid-template-columns:1fr}}
+    :root {
+      --azul-principal: #003366;
+      --azul-secundario: #007BFF;
+      --azul-claro: #4A90E2;
+      --azul-escuro: #002244;
+      --amarelo-profissional: #FFC107;
+      --amarelo-claro: #FFD54F;
+      --cinza-claro: #f8f9fa;
+      --cinza-medio: #e9ecef;
+      --branco: #ffffff;
+      --sombra: rgba(0, 0, 0, 0.1);
+      --gradiente: linear-gradient(135deg, #003366, #007BFF);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--cinza-claro);
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+      color: #333;
+      position: relative;
+    }
+    
+    body.formulario-aberto {
+      background-image: url('tmco2.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 51, 102, 0.85);
+      z-index: -1;
+    }
+    
+    header {
+      background: var(--gradiente);
+      color: var(--branco);
+      border-bottom: 4px solid var(--azul-secundario);
+      text-align: center;
+      padding-bottom: 20px;
+      box-shadow: 0 4px 12px var(--sombra);
+      position: relative;
+      z-index: 10;
+    }
+    
+    .hero-image {
+      width: 100%;
+      max-height: 350px;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto;
+    }
+    
+    header h1 {
+      margin: 0;
+      padding: 20px;
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    
+    .descricao {
+      margin: 30px auto;
+      max-width: 980px;
+      padding: 0 22px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .descricao h2 {
+      color: var(--azul-principal);
+      font-size: 20px;
+      margin-bottom: 15px;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+    
+    .descricao p {
+      color: #666;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    
+    .cta {
+      text-align: center;
+      margin: 40px 0;
+    }
+    
+    .cta button {
+      padding: 18px 40px;
+      background: var(--azul-secundario);
+      color: var(--branco);
+      border: 0;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+    }
+    
+    .cta button:hover {
+      background: var(--azul-claro);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4);
+    }
+    
+    form {
+      display: none;
+      background: var(--branco);
+      max-width: 980px;
+      margin: 18px auto;
+      padding: 30px;
+      border-radius: 14px;
+      box-shadow: 0 8px 24px var(--sombra);
+      border: 1px solid var(--cinza-medio);
+      position: relative;
+      z-index: 10;
+    }
+    
+    h3 {
+      background: var(--amarelo-profissional);
+      color: var(--azul-principal);
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin: 26px 0 14px;
+      font-size: 18px;
+      font-weight: 600;
+      position: relative;
+      overflow: hidden;
+      border-left: 5px solid var(--azul-principal);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    
+    .full {
+      grid-column: 1 / -1;
+    }
+    
+    .q {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    label {
+      font-weight: 600;
+      color: var(--azul-principal);
+      font-size: 14px;
+    }
+    
+    input, select, textarea {
+      padding: 12px 15px;
+      border: 1px solid var(--cinza-medio);
+      border-radius: 8px;
+      font-size: 15px;
+      transition: all 0.3s;
+      background: var(--branco);
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--azul-secundario);
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+    }
+    
+    input:invalid {
+      border-color: #e74c3c;
+    }
+    
+    small.req {
+      color: #e74c3c;
+      font-weight: 700;
+    }
+    
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    
+    .btn {
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: 0;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      font-size: 15px;
+    }
+    
+    .primary {
+      background: var(--azul-secundario);
+      color: var(--branco);
+      box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+    }
+    
+    .primary:hover {
+      background: var(--azul-claro);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4);
+    }
+    
+    .ghost {
+      background: var(--cinza-medio);
+      color: var(--azul-principal);
+    }
+    
+    .ghost:hover {
+      background: #dde7f5;
+    }
+    
+    footer {
+      margin-top: auto;
+      text-align: center;
+      background: var(--azul-principal);
+      color: var(--branco);
+      border-top: 4px solid var(--azul-secundario);
+      padding: 20px;
+      position: relative;
+      z-index: 10;
+    }
+    
+    footer .diretriz {
+      font-size: 12px;
+      color: #ddd;
+      font-style: italic;
+      margin-top: 4px;
+      display: block;
+    }
+    
+    .note {
+      font-size: 12px;
+      color: #666;
+    }
+    
+    @media (max-width: 780px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .cn-section {
+      margin-top: 20px;
+    }
+    
+    .region {
+      padding: 16px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px var(--sombra);
+      transition: transform 0.3s;
+      background: rgba(255, 255, 255, 0.9);
+    }
+    
+    .region:hover {
+      transform: translateY(-3px);
+    }
+    
+    .region-title {
+      font-weight: bold;
+      margin-bottom: 12px;
+      font-size: 16px;
+      color: var(--azul-principal);
+      display: flex;
+      align-items: center;
+    }
+    
+    .region-title::before {
+      content: '';
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    
+    .states-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    
+    .state {
+      background-color: var(--branco);
+      padding: 12px;
+      border-radius: 8px;
+      border-left: 4px solid var(--azul-secundario);
+      box-shadow: 0 2px 6px var(--sombra);
+      transition: all 0.3s;
+      margin-bottom: 12px;
+    }
+    
+    .state:hover {
+      box-shadow: 0 4px 10px var(--sombra);
+    }
+    
+    .state-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: var(--azul-principal);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .cn-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    
+    .cn-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+    }
+    
+    .select-all {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--azul-principal);
+    }
+    
+    .select-all-state {
+      font-size: 12px;
+      color: var(--azul-secundario);
+      cursor: pointer;
+      text-decoration: underline;
+      font-weight: 500;
+    }
+    
+    .norte {
+      border: 1px solid #cce5ff;
+    }
+    
+    .norte .region-title::before {
+      background-color: #007bff;
+    }
+    
+    .nordeste {
+      border: 1px solid #d4edda;
+    }
+    
+    .nordeste .region-title::before {
+      background-color: #28a745;
+    }
+    
+    .centro {
+      border: 1px solid #fff3cd;
+    }
+    
+    .centro .region-title::before {
+      background-color: var(--amarelo-profissional);
+    }
+    
+    .sudeste {
+      border: 1px solid #f8d7da;
+    }
+    
+    .sudeste .region-title::before {
+      background-color: #dc3545;
+    }
+    
+    .sul {
+      border: 1px solid #e2e3e5;
+    }
+    
+    .sul .region-title::before {
+      background-color: #6c757d;
+    }
+    
+    .escopo-projeto {
+      margin-bottom: 10px;
+    }
+    
+    .escopo-projeto label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      background: var(--cinza-claro);
+      transition: background 0.3s;
+    }
+    
+    .escopo-projeto label:hover {
+      background: #e2eaf9;
+    }
+    
+    @media (max-width: 768px) {
+      .states-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .descricao {
+        margin: 20px auto;
+        padding: 0 15px;
+      }
+      
+      form {
+        padding: 20px;
+      }
+      
+      header h1 {
+        font-size: 20px;
+      }
+      
+      .hero-image {
+        max-height: 250px;
+      }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    form {
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    .btn.loading {
+      position: relative;
+      color: transparent;
+    }
+    
+    .btn.loading::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 50%;
+      left: 50%;
+      margin-left: -10px;
+      margin-top: -10px;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s ease infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
   <header>
-    <img src="tmco.png" alt="TMCO Consultoria" />
-    <h1>QUESTIONÁRIO PARA DIAGNÓSTICO DE PROJETO JÁ EM ANDAMENTO</h1>
+    <img class="hero-image" src="tmco.png" alt="TMCO Consultoria" />
+    <h1>QUESTIONÁRIO PARA PROJETO DE INTERCONEXÃO</h1>
   </header>
+
+  <div class="descricao">
+    <h2>A proposta comercial da TMCO será elaborada exclusivamente com base nos dados fornecidos neste formulário. Inconsistências identificadas durante a implantação poderão resultar na revisão da proposta para melhor adequação ao cenário real. Assim, em caso de dúvidas no preenchimento dos dados, recomenda-se que consulte-nos antes de finalizar o formulário.</h2>
+  </div>
 
   <div class="cta">
     <button type="button" class="btn primary" onclick="mostrarFormulario()">Clique aqui e preencha o formulário</button>
@@ -83,7 +537,7 @@
           <option>Divorciado(a)</option><option>Viúvo(a)</option><option>União Estável</option>
         </select>
       </div>
-      <div class="q"><label>Data de Nascimento</label><input type="date" name="rep_nascimento" /></div>
+      <div class="q"><label>Data de Nascimento</label><input type="text" placeholder="dd/mm/aaaa" name="rep_nascimento" /></div>
       <div class="q full"><label>Endereço Residencial</label><input name="rep_endereco" /></div>
       <div class="q"><label>Bairro Residencial</label><input name="rep_bairro" /></div>
       <div class="q"><label>Cidade Residencial</label><input name="rep_cidade" /></div>
@@ -91,134 +545,458 @@
       <div class="q"><label>CEP Residencial</label><input name="rep_cep" id="cep_res" placeholder="00000-000" /></div>
     </div>
 
-    <h3>Possui credenciamento nos Sistemas ABR?</h3>
+    <h3>Possui credenciamento nos sistemas ABR?</h3>
     <div class="grid">
-      <div class="q"><label>EASI/nSAPN:</label><select id="easi" name="EASI"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
-      <div class="q"><label>ESOA/SNOA:</label><select id="esoa" name="ESOA"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
-      <div class="q"><label>Nsapn/QEML:</label><select id="nsapn" name="Nsapn"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
-      <div class="q"><label>BA ITX:</label><select id="baitx" name="BA ITX"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>EASI/nSAPN:</label><select id="EASI" name="EASI"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>ESOA/SNOA:</label><select id="ESOA" name="ESOA"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>nSAPN/QEML:</label><select id="nSAPN" name="nSAPN"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>BA ITX:</label><select id="baitx" name="BA_ITX"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
       <div class="q"><label>Portabilidade:</label><select id="portabilidade" name="Portabilidade"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
-      <div class="q"><label>STIRSHAKEN:</label><select id="stirshaken" name="STIRSHAKEN"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>STIRSHAKEN:</label><select id="STIRSHAKEN" name="STIRSHAKEN"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
     </div>
 
     <h3>Possui recursos de numeração?</h3>
     <div class="grid">
-      <div class="q"><label>RN1:</label><input name="RN1" /></div>
-      <div class="q"><label>EOT:</label><input name="EOT" /></div>
-      <div class="q"><label>Prefixo:</label><input name="Prefixo" /></div>
-      <div class="q"><label>CNG:</label><input name="CNG" /></div>
+      <div class="q"><label>RN1:</label><select id="RN1" name="RN1"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>EOT:</label><select id="EOT" name="EOT"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>Prefixo:</label><select id="Prefixo" name="Prefixo"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>CNG:</label><select id="CNG" name="CNG" ><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
     </div>
 
     <h3>Solução ABR já implantada?</h3>
     <div class="grid">
-      <div class="q"><label>Portabilidade:</label><select name="Portabilidade Implantada"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
-      <div class="q"><label>Qual parceiro?</label><input name="Parceiro Portabilidade" /></div>
-      <div class="q"><label>STIRSHAKEN:</label><select name="STIRSHAKEN Implantado"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>Portabilidade:</label><select id="Portabilidade_implantada" name="Portabilidade_implantada"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>Qual fornecedor?</label><input name="FORNECEDOR_implantada1" id="FORNECEDOR_implantada1" placeholder="" /></div>
+      <div class="q"><label>STIRSHAKEN:</label><select id="STIRSHAKEN_implantada" name="STIRSHAKEN_implantada"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>Qual fornecedor?</label><input name="FORNECEDOR_implantada2" id="FORNECEDOR_implantada2" placeholder="" /></div>
     </div>
-
+    
     <h3>Possui CONTRATOS DE ITX com as operadoras?</h3>
     <div class="grid">
-      <div class="q"><label>ALGAR:</label><select name="Contrato ALGAR"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
-      <div class="q"><label>CLARO:</label><select name="Contrato CLARO"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
-      <div class="q"><label>OI:</label><select name="Contrato OI"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
-      <div class="q"><label>TIM:</label><select name="Contrato TIM"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
-      <div class="q"><label>VIVO:</label><select name="Contrato VIVO"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>ALGAR:</label><select id="ALGAR_contrato" name="ALGAR_contrato"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>CLARO:</label><select id="CLARO_contrato" name="CLARO_contrato"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>OI:</label><select id="OI_contrato" name="OI_contrato"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>TIM:</label><select id="TIM_contrato" name="TIM_contrato"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>OUTROS:</label><input name="OUTROS_contrato" id="OUTROS_contrato" placeholder="" /></div>
     </div>
-
-    <h3>Possui ITX estabelecida com as operadoras?</h3>
+    
+    <h3>Possui hoje ITX estabelecida com as operadoras?</h3>
     <div class="grid">
-      <div class="q"><label>ALGAR:</label><select name="ITX ALGAR"><option value="">Selecione</option><option>Direta</option><option>Indireta</option><option>Não</option></select></div>
-      <div class="q"><label>CLARO:</label><select name="ITX CLARO"><option value="">Selecione</option><option>Direta</option><option>Indireta</option><option>Não</option></select></div>
-      <div class="q"><label>OI:</label><select name="ITX OI"><option value="">Selecione</option><option>Direta</option><option>Indireta</option><option>Não</option></select></div>
-      <div class="q"><label>TIM:</label><select name="ITX TIM"><option value="">Selecione</option><option>Direta</option><option>Indireta</option><option>Não</option></select></div>
-      <div class="q"><label>VIVO:</label><select name="ITX VIVO"><option value="">Selecione</option><option>Direta</option><option>Indireta</option><option>Não</option></select></div>
+      <div class="q"><label>ALGAR:</label><select id="ALGAR_itx" name="ALGAR_itx"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>CLARO:</label><select id="CLARO_itx" name="CLARO_itx"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>OI:</label><select id="OI_itx" name="OI_itx"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>TIM:</label><select id="TIM_itx" name="TIM_itx"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>VIVO:</label><select id="VIVO_itx" name="VIVO_itx"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>OUTROS:</label><input name="OUTROS_itx" id="OUTROS_itx" placeholder="" /></div>
+    </div>
+    
+    <h3>Qual o escopo do projeto?</h3>
+    <div class="escopo-projeto">
+      <label><input type="checkbox" name="escopo_projeto1" value="1ª Interconexão"> 1ª Interconexão</label>
+      <label><input type="checkbox" name="escopo_projeto2" value="Migração de Tecnologia (TDM x SIP x Internet)"> Migração de Tecnologia (TDM x SIP x Internet)</label>
+      <label><input type="checkbox" name="escopo_projeto3" value="Ampliação da área de cobertura"> Ampliação da área de cobertura</label>
+      <label><input type="checkbox" name="escopo_projeto4" value="Contingência de encaminhamento de tráfego"> Contingência de encaminhamento de tráfego</label>
+      <label><input type="checkbox" name="escopo_projeto5" value="Migração de rota indireta para rota direta"> Migração de rota indireta para rota direta</label>
+      <label><input type="checkbox" name="escopo_projeto6" value="Inclusão Novo Serviço (STFC, SMP ou SCM)"> Inclusão Novo Serviço (STFC, SMP ou SCM)</label>
+      <label><input type="checkbox" name="escopo_projeto7" value="Topologia de Centralização SIPi"> Topologia de Centralização SIPi</label>
+      <div class="q"><label>OUTROS:</label><input name="OUTROS_projeto8" id="OUTROS_projeto8" placeholder="" /></div>
     </div>
 
-    <h3>Qual escopo do Projeto?</h3>
-    <div class="grid">
-      <label class="q"><input type="checkbox" name="Escopo" value="1ª Interconexão"> 1ª Interconexão</label>
-      <label class="q"><input type="checkbox" name="Escopo" value="Nova área Geográfica"> Nova área Geográfica</label>
-      <label class="q"><input type="checkbox" name="Escopo" value="Migração de Tecnologia"> Migração de Tecnologia (TDM/SIP/Internet)</label>
-      <label class="q"><input type="checkbox" name="Escopo" value="Ampliação de Rota Existente"> Ampliação de Rota Existente</label>
-      <label class="q"><input type="checkbox" name="Escopo" value="Contingência"> Contingência</label>
-      <label class="q"><input type="checkbox" name="Escopo" value="Inclusão Novo Serviço"> Inclusão Novo Serviço (STFC, SMP, SCM)</label>
-      <label class="q"><input type="checkbox" name="Escopo" value="Topologia SIP"> Topologia de Centralização SIP</label>
+    <h3>Qual ou quais as áreas de atuação por (CN) para o referido projeto?</h3>
+    <div class="cn-section">
+      <div class="region norte">
+        <div class="region-title">Norte</div>
+        <label class="select-all"><input type="checkbox" onclick="toggleRegion(this,'norte')"> Selecionar Todos</label>
+        <div class="states-grid">
+          <div>
+            <div class="state" data-state="AC">
+              <div class="state-title">AC <span class="select-all-state" onclick="toggleState('AC')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="68"> CN 68</label>
+              </div>
+            </div>
+            <div class="state" data-state="AM">
+              <div class="state-title">AM <span class="select-all-state" onclick="toggleState('AM')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="92"> CN 92</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="97"> CN 97</label>
+              </div>
+            </div>
+            <div class="state" data-state="AP">
+              <div class="state-title">AP <span class="select-all-state" onclick="toggleState('AP')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="96"> CN 96</label>
+              </div>
+            </div>
+            <div class="state" data-state="PA">
+              <div class="state-title">PA <span class="select-all-state" onclick="toggleState('PA')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="91"> CN 91</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="93"> CN 93</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="94"> CN 94</label>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="state" data-state="RO">
+              <div class="state-title">RO <span class="select-all-state" onclick="toggleState('RO')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="69"> CN 69</label>
+              </div>
+            </div>
+            <div class="state" data-state="RR">
+              <div class="state-title">RR <span class="select-all-state" onclick="toggleState('RR')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="95"> CN 95</label>
+              </div>
+            </div>
+            <div class="state" data-state="TO">
+              <div class="state-title">TO <span class="select-all-state" onclick="toggleState('TO')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="63"> CN 63</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="region nordeste">
+        <div class="region-title">Nordeste</div>
+        <label class="select-all"><input type="checkbox" onclick="toggleRegion(this,'nordeste')"> Selecionar Todos</label>
+        <div class="states-grid">
+          <div>
+            <div class="state" data-state="AL">
+              <div class="state-title">AL <span class="select-all-state" onclick="toggleState('AL')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="82"> CN 82</label>
+              </div>
+            </div>
+            <div class="state" data-state="BA">
+              <div class="state-title">BA <span class="select-all-state" onclick="toggleState('BA')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="71"> CN 71</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="73"> CN 73</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="74"> CN 74</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="75"> CN 75</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="77"> CN 77</label>
+              </div>
+            </div>
+            <div class="state" data-state="CE">
+              <div class="state-title">CE <span class="select-all-state" onclick="toggleState('CE')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="85"> CN 85</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="88"> CN 88</label>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="state" data-state="MA">
+              <div class="state-title">MA <span class="select-all-state" onclick="toggleState('MA')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="98"> CN 98</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="99"> CN 99</label>
+              </div>
+            </div>
+            <div class="state" data-state="PB">
+              <div class="state-title">PB <span class="select-all-state" onclick="toggleState('PB')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="83"> CN 83</label>
+              </div>
+            </div>
+            <div class="state" data-state="PE">
+              <div class="state-title">PE <span class="select-all-state" onclick="toggleState('PE')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="81"> CN 81</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="87"> CN 87</label>
+              </div>
+            </div>
+            <div class="state" data-state="PI">
+              <div class="state-title">PI <span class="select-all-state" onclick="toggleState('PI')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="86"> CN 86</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="89"> CN 89</label>
+              </div>
+            </div>
+            <div class="state" data-state="RN">
+              <div class="state-title">RN <span class="select-all-state" onclick="toggleState('RN')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="84"> CN 84</label>
+              </div>
+            </div>
+            <div class="state" data-state="SE">
+              <div class="state-title">SE <span class="select-all-state" onclick="toggleState('SE')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="79"> CN 79</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="region centro">
+        <div class="region-title">Centro-Oeste</div>
+        <label class="select-all"><input type="checkbox" onclick="toggleRegion(this,'centro')"> Selecionar Todos</label>
+        <div class="states-grid">
+          <div>
+            <div class="state" data-state="DF">
+              <div class="state-title">DF <span class="select-all-state" onclick="toggleState('DF')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="61"> CN 61</label>
+              </div>
+            </div>
+            <div class="state" data-state="GO">
+              <div class="state-title">GO <span class="select-all-state" onclick="toggleState('GO')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="62"> CN 62</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="64"> CN 64</label>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="state" data-state="MS">
+              <div class="state-title">MS <span class="select-all-state" onclick="toggleState('MS')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="67"> CN 67</label>
+              </div>
+            </div>
+            <div class="state" data-state="MT">
+              <div class="state-title">MT <span class="select-all-state" onclick="toggleState('MT')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="65"> CN 65</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="66"> CN 66</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="region sudeste">
+        <div class="region-title">Sudeste</div>
+        <label class="select-all"><input type="checkbox" onclick="toggleRegion(this,'sudeste')"> Selecionar Todos</label>
+        <div class="states-grid">
+          <div>
+            <div class="state" data-state="ES">
+              <div class="state-title">ES <span class="select-all-state" onclick="toggleState('ES')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="27"> CN 27</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="28"> CN 28</label>
+              </div>
+            </div>
+            <div class="state" data-state="MG">
+              <div class="state-title">MG <span class="select-all-state" onclick="toggleState('MG')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="31"> CN 31</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="32"> CN 32</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="33"> CN 33</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="34"> CN 34</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="35"> CN 35</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="37"> CN 37</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="38"> CN 38</label>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="state" data-state="RJ">
+              <div class="state-title">RJ <span class="select-all-state" onclick="toggleState('RJ')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="21"> CN 21</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="22"> CN 22</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="24"> CN 24</label>
+              </div>
+            </div>
+            <div class="state" data-state="SP">
+              <div class="state-title">SP <span class="select-all-state" onclick="toggleState('SP')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="11"> CN 11</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="12"> CN 12</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="13"> CN 13</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="14"> CN 14</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="15"> CN 15</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="16"> CN 16</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="17"> CN 17</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="18"> CN 18</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="19"> CN 19</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="region sul">
+        <div class="region-title">Sul</div>
+        <label class="select-all"><input type="checkbox" onclick="toggleRegion(this,'sul')"> Selecionar Todos</label>
+        <div class="states-grid">
+          <div>
+            <div class="state" data-state="PR">
+              <div class="state-title">PR <span class="select-all-state" onclick="toggleState('PR')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="41"> CN 41</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="42"> CN 42</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="43"> CN 43</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="44"> CN 44</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="45"> CN 45</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="46"> CN 46</label>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="state" data-state="RS">
+              <div class="state-title">RS <span class="select-all-state" onclick="toggleState('RS')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="51"> CN 51</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="53"> CN 53</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="54"> CN 54</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="55"> CN 55</label>
+              </div>
+            </div>
+            <div class="state" data-state="SC">
+              <div class="state-title">SC <span class="select-all-state" onclick="toggleState('SC')">Selecionar Todos</span></div>
+              <div class="cn-grid">
+                <label class="cn-item"><input type="checkbox" name="CN" value="47"> CN 47</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="48"> CN 48</label>
+                <label class="cn-item"><input type="checkbox" name="CN" value="49"> CN 49</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
+    
     <h3>Possui Plataforma de Voz?</h3>
     <div class="grid">
-      <div class="q"><label>Possui Plataforma de Voz?</label><select name="Plataforma Voz"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
-      <div class="q"><label>Qual parceiro/fornecedor de Plataforma de Voz?</label><input name="Parceiro Voz" /></div>
-      <div class="q"><label>Possui Gateway?</label><select name="Gateway"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
-      <div class="q"><label>Qual parceiro/fornecedor de GATEWAY?</label><input name="Parceiro Gateway" /></div>
-      <div class="q"><label>Possui Sistema/Plataforma DETRAF?</label><select name="DETRAF"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
-      <div class="q"><label>Qual parceiro/fornecedor de Plataforma DETRAF?</label><input name="Parceiro DETRAF" /></div>
+      <div class="q"><label>Selecione uma opção</label><select id="SIM_NAO_plataforma" name="SIM_NAO_plataforma"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>Qual fornecedor?</label><input name="FORNECEDOR_plataforma" id="FORNECEDOR_plataforma" placeholder="" /></div>
     </div>
 
-    <div class="note">Campos com <span class="req">*</span> são obrigatórios.</div>
+    <h3>Possui Gateway/SBC?</h3>
+    <div class="grid">
+      <div class="q"><label>Selecione uma opção</label><select id="SIM_NAO_gateway" name="SIM_NAO_gateway"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>Qual fornecedor?</label><input name="FORNECEDOR_gateway" id="FORNECEDOR_gateway" placeholder="" /></div>
+    </div>
 
+    <h3>Possui Sistema/Plataforma de DETRAF?</h3>
+    <div class="grid">
+      <div class="q"><label>Selecione uma opção</label><select id="SIM_NAO_sistema_detraf" name="SIM_NAO_sistema_detraf"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
+      <div class="q"><label>Qual fornecedor?</label><input name="FORNECEDOR_sistema_detraf" id="FORNECEDOR_sistema_detraf" placeholder="" /></div>
+    </div>
+    
     <div class="actions">
-      <button class="btn primary" type="submit">Enviar</button>
-      <button class="btn ghost" type="button" id="btnExcel">Exportar Excel (local)</button>
-      <button class="btn ghost" type="button" id="btnPDF">Exportar PDF (local)</button>
+      <button type="submit" class="btn primary">Enviar</button>
+      <button type="reset" class="btn ghost">Limpar</button>
     </div>
   </form>
+  
+  <footer>
+    TMCO Consultoria &copy; 2025
+    <span class="diretriz">Todos os direitos reservados.</span>
+  </footer>
 
-  <footer>TMCO Consultoria © 2025</footer>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function() {
+      emailjs.init("_qKt61jrHvEWCuZph");
+    })();
+  </script>
 
   <script>
-    function mostrarFormulario(){ 
-      document.getElementById('questionario').style.display='block'; 
-      scrollTo(0, document.getElementById('questionario').offsetTop-10); 
-    }
-
-    function getFormData(){
-      const fd = new FormData(document.getElementById('questionario'));
-      const data = {};
-      for(const [k,v] of fd.entries()){
-        if(k==='Escopo'){ (data[k]=data[k]||[]).push(v); }
-        else { data[k]=v; }
+    function mostrarFormulario() {
+      document.getElementById("questionario").style.display = "block";
+      document.body.classList.add('formulario-aberto');
+      
+      if (!document.querySelector('.overlay')) {
+        const overlay = document.createElement('div');
+        overlay.className = 'overlay';
+        document.body.appendChild(overlay);
       }
-      return data;
+      
+      window.scrollTo(0, 0);
     }
 
-    // Exportar Excel local
-    document.getElementById('btnExcel').onclick = ()=>{
-      const ws = XLSX.utils.json_to_sheet([getFormData()]);
-      const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Respostas");
-      XLSX.writeFile(wb, "respostas_tmco.xlsx");
-    };
-
-    // Exportar PDF local
-    document.getElementById('btnPDF').onclick = ()=>{
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({unit:'pt',format:'a4'});
-      doc.setFontSize(14); doc.text("Respostas do Questionário – TMCO",40,40);
-      let y=70; doc.setFontSize(10);
-      const data=getFormData();
-      Object.entries(data).forEach(([k,v])=>{
-        const line = `${k}: ${Array.isArray(v)?v.join(", "):v}`;
-        const split = doc.splitTextToSize(line, 515);
-        split.forEach(s=>{ if(y>770){doc.addPage(); y=40;} doc.text(s,40,y); y+=14; });
+    function toggleRegion(source, regionClass) {
+      const checkboxes = document.querySelectorAll("." + regionClass + " input[type='checkbox']");
+      checkboxes.forEach(cb => {
+        if (cb !== source) cb.checked = source.checked;
       });
-      doc.save("respostas_tmco.pdf");
-    };
+    }
 
-    // Enviar ao backend
-    document.getElementById("questionario").addEventListener("submit", async (e)=>{
+    function toggleState(stateCode) {
+      const stateContainer = document.querySelector('.state[data-state="' + stateCode + '"]');
+      if (!stateContainer) return;
+      
+      const checkboxes = stateContainer.querySelectorAll("input[type='checkbox']");
+      if (checkboxes.length === 0) return;
+      
+      const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+      checkboxes.forEach(cb => {
+        cb.checked = !allChecked;
+      });
+    }
+
+    document.getElementById("questionario").addEventListener("submit", function(e) {
       e.preventDefault();
-      const dados=getFormData();
-      try{
-        const resp=await fetch("http://localhost:3000/submit",{
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body: JSON.stringify(dados)
-        });
-        const out=await resp.json();
-        alert(out.message || "Enviado!");
-      }catch(err){
-        alert("❌ Falha ao enviar para o servidor.");
+      
+      const submitBtn = this.querySelector('button[type="submit"]');
+      submitBtn.classList.add('loading');
+      submitBtn.disabled = true;
+
+      const checkedCNs = Array.from(document.querySelectorAll("input[name='CN']:checked"))
+        .map(cb => cb.value)
+        .join(", ");
+
+      let cnHidden = document.getElementById("cn_combinado");
+      if (!cnHidden) {
+        cnHidden = document.createElement("input");
+        cnHidden.type = "hidden";
+        cnHidden.name = "CN";
+        cnHidden.id = "cn_combinado";
+        this.appendChild(cnHidden);
       }
+      cnHidden.value = checkedCNs;
+
+      emailjs.sendForm("service_ubg7zn3", "template_7az3lls", this)
+        .then(function(response) {
+          alert("✅ Formulário enviado com sucesso!");
+          document.getElementById("questionario").reset();
+          submitBtn.classList.remove('loading');
+          submitBtn.disabled = false;
+        }, function(error) {
+          console.error("❌ Erro:", error);
+          alert("Erro ao enviar. Verifique sua conexão ou tente novamente.");
+          submitBtn.classList.remove('loading');
+          submitBtn.disabled = false;
+        });
+    });
+
+    async function buscarCNPJ(cnpj) {
+      cnpj = cnpj.replace(/\D/g, "");
+      if (cnpj.length !== 14) return;
+
+      try {
+        const resposta = await fetch("https://brasilapi.com.br/api/cnpj/v1/" + cnpj);
+        if (!resposta.ok) throw new Error("Erro ao buscar CNPJ");
+
+        const dados = await resposta.json();
+
+        document.querySelector("input[name='razao_social']").value = dados.razao_social || "";
+        document.querySelector("input[name='nome_fantasia']").value = dados.nome_fantasia || "";
+        document.querySelector("input[name='endereco']").value = (dados.logradouro || "") + ", " + (dados.numero || "");
+        document.querySelector("input[name='bairro']").value = dados.bairro || "";
+        document.querySelector("input[name='cidade']").value = dados.municipio || "";
+        document.querySelector("input[name='uf']").value = dados.uf || "";
+        document.querySelector("input[name='cep']").value = dados.cep || "";
+      } catch (erro) {
+        console.error("Erro ao consultar CNPJ:", erro);
+        alert("❌ Não foi possível consultar o CNPJ. Verifique e tente novamente.");
+      }
+    }
+
+    document.getElementById("cnpj").addEventListener("blur", function () {
+      buscarCNPJ(this.value);
     });
   </script>
 </body>
