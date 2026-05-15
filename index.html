@@ -482,6 +482,17 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+    .titulo-branco {
+  background: #ffffff;
+  color: #003366;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin: 16px 0 14px;
+  font-size: 18px;
+  font-weight: 600;
+  border-left: 5px solid #003366;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
   </style>
 </head>
 <body>
@@ -868,8 +879,10 @@
     </div>
     
     <h3>Possui Plataforma de Voz?</h3>
-    <p>VICTOR</p>
-    <div class="grid">
+    <h3 class="titulo-branco">
+  Informações da Plataforma
+</h3>
+        <div class="grid">
       <div class="q"><label>Selecione uma opção</label><select id="SIM_NAO_plataforma" name="SIM_NAO_plataforma"><option value="">Selecione</option><option>Sim</option><option>Não</option></select></div>
       <div class="q"><label>Qual fornecedor?</label><input name="FORNECEDOR_plataforma" id="FORNECEDOR_plataforma" placeholder="" /></div>
     </div>
